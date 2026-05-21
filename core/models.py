@@ -7,9 +7,7 @@ class UserDetails(models.Model):
     linkedin = models.URLField(blank=True)        
     instagram = models.URLField(blank=True)          
     github = models.URLField(blank=True)              
-    image = models.ImageField(                       
-        upload_to="media/profile/"
-    )
+    image = models.ImageField(upload_to="profile/")
 
     # Bachelors
     college_name = models.CharField(max_length=100)
@@ -40,7 +38,7 @@ class Skill(models.Model):
 
 class Project(models.Model):
     name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to="projects/" , blank = True)
+    image = models.ImageField(upload_to="projects/", blank=True)
     project_details = models.TextField(blank=False, null=True)
     github_repo = models.URLField()
     live_url = models.URLField(blank=True, null=True)
