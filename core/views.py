@@ -8,6 +8,7 @@ def home(request):
     user = UserDetails.objects.first()
     skills = Skill.objects.all()
     projects = Project.objects.all()
+    
 
     context = {
     'user': user,

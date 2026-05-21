@@ -39,9 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'cloudinary_storage',
     'django.contrib.staticfiles',
-    'cloudinary',
     'core'
 ]
 
@@ -89,12 +87,7 @@ DATABASES = {
 }
 
 
-CLOUDINARY_STORAGE = {
-    'CLOUDINARY_CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'CLOUDINARY_API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'CLOUDINARY_API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
-}
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 
 
 # Password validation
@@ -131,6 +124,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Media files (kept for backward compatibility, not used for images)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

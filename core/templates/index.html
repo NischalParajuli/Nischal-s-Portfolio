@@ -69,7 +69,7 @@
           <div class="photo-frame-outer"></div>
           <div class="photo-frame-inner">
             {% if user.image %}
-              <img src="{{ user.image.url }}" alt="{{ user.username }}" class="profile-img">
+              <img src="{% static user.image %}" alt="{{ user.username }}" class="profile-img">
             {% else %}
               <span class="photo-initials">
                 {{ user.username|slice:":2"|upper }}
@@ -221,7 +221,7 @@
           </div>
           {% if project.image %}
           <div class="proj-img-wrap">
-            <img src="{{ project.image.url }}" alt="{{ project.name }}" class="proj-img">
+            <img src="{% static project.image %}" alt="{{ project.name }}" class="proj-img">
           </div>
           {% endif %}
           <div class="proj-title">{{ project.name }}</div>
