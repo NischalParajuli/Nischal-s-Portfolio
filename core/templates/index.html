@@ -1,0 +1,314 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ user.username }} — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Zen+Kaku+Gothic+New:wght@300;400;700&family=DM+Mono:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+  <canvas id="sakura-canvas"></canvas>
+
+  <div class="parallax-scene" id="parallaxScene">
+    <div class="para-orb po1"></div>
+    <div class="para-orb po2"></div>
+    <div class="para-orb po3"></div>
+  </div>
+
+  <div class="kanji-bg">
+    <span class="kanji-char">夢</span>
+    <span class="kanji-char">創</span>
+    <span class="kanji-char">道</span>
+  </div>
+
+  <div class="site">
+
+    <!-- NAV -->
+    <nav id="navbar">
+      <a href="#hero" class="nav-logo"><span class="sigil">⬡</span> {{ user.username }}</a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Work</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <!-- ── HERO ── -->
+    <section id="hero">
+      <div class="hero-left">
+        <div class="hero-tag">
+          <span class="live-dot"></span>
+          Available for work · Kathmandu, Nepal
+        </div>
+        <h1 class="hero-h1">
+          <span class="name-line">{{ user.username }}</span>
+        </h1>
+        <p class="hero-subtitle">Backend Developer · 夢を作る</p>
+        <p class="hero-desc">{{ user.bio }}</p>
+        <div class="hero-ctas">
+          <a href="#projects" class="btn-gold">View Work</a>
+          <a href="#contact" class="btn-ghost">Say Hello →</a>
+        </div>
+        <div class="scroll-hint">
+          <div class="scroll-line"></div>
+          <span>Scroll</span>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="photo-container">
+          <div class="photo-frame-outer"></div>
+          <div class="photo-frame-inner">
+            {% if user.image %}
+              <img src="{{ user.image.url }}" alt="{{ user.username }}" class="profile-img">
+            {% else %}
+              <span class="photo-initials">
+                {{ user.username|slice:":2"|upper }}
+              </span>
+            {% endif %}
+          </div>
+          <div class="photo-label">✕ {{ user.username }}</div>
+        </div>
+        <div class="status-row">
+          <div class="status-dot"></div>
+          <span>Open to opportunities</span>
+        </div>
+        <div class="hero-socials">
+          {% if user.github %}<a href="{{ user.github }}" class="social-link" target="_blank" rel="noopener">GitHub</a>{% endif %}
+          {% if user.linkedin %}<a href="{{ user.linkedin }}" class="social-link" target="_blank" rel="noopener">LinkedIn</a>{% endif %}
+          {% if user.instagram %}<a href="{{ user.instagram }}" class="social-link" target="_blank" rel="noopener">Instagram</a>{% endif %}
+          {% if user.facebook %}<a href="{{ user.facebook }}" class="social-link" target="_blank" rel="noopener">Facebook</a>{% endif %}
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ABOUT ── -->
+    <section id="about">
+      <div class="reveal">
+        <div class="section-eyebrow"><span>01 · About</span></div>
+        <h2 class="section-title">A little about <em>me</em></h2>
+      </div>
+      <div class="about-grid reveal">
+        <div class="about-text">
+          <p>{{ user.bio }}</p>
+          <p>I build backends that are clean, fast, and reliable. Currently learning <strong>Django</strong> and exploring the depth of Python web development — from ORM queries to REST APIs.</p>
+          <p>When I'm not coding, I'm probably deep in an anime arc or overthinking system architecture at 2am.</p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <span class="stat-num">{{ projects|length }}</span>
+            <span class="stat-label">Projects</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">{{ total_skills }}</span>
+            <span class="stat-label">Skills</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">Django</span>
+            <span class="stat-label">Current stack</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">NP</span>
+            <span class="stat-label">Based in</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SKILLS ── -->
+    <section id="skills">
+      <div class="reveal">
+        <div class="section-eyebrow"><span>02 · Skills</span></div>
+        <h2 class="section-title">Tools of the <em>craft</em></h2>
+      </div>
+
+      {% for skill in skills %}
+      <div class="skill-block reveal">
+        {% if skill.desc %}
+          <p class="skill-desc">{{ skill.desc }}</p>
+        {% endif %}
+        <div class="skill-clusters">
+          {% if skill.language %}
+          <div class="skill-cluster">
+            <div class="cluster-label">Languages</div>
+            <div class="skill-tags">
+              {% for lang in skill.language.split %}
+                <span class="skill-tag">{{ lang }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+          {% if skill.backend %}
+          <div class="skill-cluster">
+            <div class="cluster-label">Backend</div>
+            <div class="skill-tags">
+              {% for item in skill.backend.split %}
+                <span class="skill-tag">{{ item }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+          {% if skill.frontend %}
+          <div class="skill-cluster">
+            <div class="cluster-label">Frontend</div>
+            <div class="skill-tags">
+              {% for item in skill.frontend.split %}
+                <span class="skill-tag">{{ item }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+          {% if skill.database %}
+          <div class="skill-cluster">
+            <div class="cluster-label">Database</div>
+            <div class="skill-tags">
+              {% for item in skill.database.split %}
+                <span class="skill-tag">{{ item }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+          {% if skill.apis %}
+          <div class="skill-cluster">
+            <div class="cluster-label">APIs</div>
+            <div class="skill-tags">
+              {% for item in skill.apis.split %}
+                <span class="skill-tag">{{ item }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+          {% if skill.others %}
+          <div class="skill-cluster">
+            <div class="cluster-label">Others</div>
+            <div class="skill-tags">
+              {% for item in skill.others.split %}
+                <span class="skill-tag">{{ item }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% empty %}
+      <p class="empty-state">No skills added yet.</p>
+      {% endfor %}
+    </section>
+
+    <!-- ── PROJECTS ── -->
+    <section id="projects">
+      <div class="reveal">
+        <div class="section-eyebrow"><span>03 · Work</span></div>
+        <h2 class="section-title">Things I've <em>built</em></h2>
+      </div>
+
+      <div class="proj-list">
+        {% for project in projects %}
+        <div class="proj-card reveal">
+          <div class="proj-header">
+            <span class="proj-num">0{{ forloop.counter }} ·</span>
+            {% if project.live_url %}<span class="proj-live-badge">Live</span>{% endif %}
+            <span class="proj-arrow">↗</span>
+          </div>
+          {% if project.image %}
+          <div class="proj-img-wrap">
+            <img src="{{ project.image.url }}" alt="{{ project.name }}" class="proj-img">
+          </div>
+          {% endif %}
+          <div class="proj-title">{{ project.name }}</div>
+          <div class="proj-desc">{{ project.project_details }}</div>
+          <div class="proj-links">
+            {% if project.github_repo %}
+            <a href="{{ project.github_repo }}" class="proj-link" target="_blank" rel="noopener">
+              <span>↗</span> GitHub
+            </a>
+            {% endif %}
+            {% if project.live_url %}
+            <a href="{{ project.live_url }}" class="proj-link proj-link-live" target="_blank" rel="noopener">
+              <span>↗</span> Live Demo
+            </a>
+            {% endif %}
+          </div>
+        </div>
+        {% empty %}
+        <p class="empty-state">No projects added yet.</p>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- ── EDUCATION ── -->
+    <section id="education">
+      <div class="reveal">
+        <div class="section-eyebrow"><span>04 · Education</span></div>
+        <h2 class="section-title">Where I <em>studied</em></h2>
+      </div>
+
+      <div class="edu-list reveal">
+        {% if user.college_name %}
+        <div class="edu-item">
+          <div class="edu-date">{{ user.bachelors_year }}</div>
+          <div class="edu-body">
+            <div class="edu-degree">{{ user.degree }}</div>
+            <div class="edu-school">{{ user.college_name }}</div>
+            <div class="edu-location">{{ user.college_location }}</div>
+          </div>
+        </div>
+        {% endif %}
+
+        {% if user.school_name %}
+        <div class="edu-item">
+          <div class="edu-date">{{ user.school_year }}</div>
+          <div class="edu-body">
+            <div class="edu-degree">Class XII</div>
+            <div class="edu-school">{{ user.school_name }}</div>
+            <div class="edu-location">{{ user.school_location }}</div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </section>
+
+    <!-- ── CONTACT ── -->
+    <section id="contact">
+      <div class="reveal">
+        <div class="section-eyebrow"><span>05 · Contact</span></div>
+      </div>
+      <div class="contact-inner reveal">
+        <h2 class="contact-big">Let's build something<br><em>worth remembering</em></h2>
+        <p class="contact-sub">Whether it's a project, a collab, or just a conversation — I'm open to connecting with people who care about craft.</p>
+        <div class="contact-links">
+          {% if user.email %}
+          <a href="mailto:{{ user.email }}" class="contact-chip">✉ {{ user.email }}</a>
+          {% endif %}
+          {% if user.github %}
+          <a href="{{ user.github }}" class="contact-chip" target="_blank" rel="noopener">↗ GitHub</a>
+          {% endif %}
+          {% if user.linkedin %}
+          <a href="{{ user.linkedin }}" class="contact-chip" target="_blank" rel="noopener">↗ LinkedIn</a>
+          {% endif %}
+          {% if user.instagram %}
+          <a href="{{ user.instagram }}" class="contact-chip" target="_blank" rel="noopener">↗ Instagram</a>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>© 2026 {{ user.username }} · Kathmandu, Nepal</span>
+      <span class="footer-jp">夢を作る</span>
+    </footer>
+
+  </div><!-- /.site -->
+
+  <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
