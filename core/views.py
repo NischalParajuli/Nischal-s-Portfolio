@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import UserDetails, Skill, Project
 from django.views.decorators.cache import never_cache
+from django.http import JsonResponse
+
 
 
 @never_cache
@@ -21,3 +23,6 @@ def home(request):
     ),
 }
     return render(request, 'index.html', context)
+
+def healthz(request):
+    return JsonResponse({"status": "ok"})
