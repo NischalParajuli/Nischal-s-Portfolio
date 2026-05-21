@@ -7,7 +7,11 @@ class UserDetails(models.Model):
     linkedin = models.URLField(blank=True)        
     instagram = models.URLField(blank=True)          
     github = models.URLField(blank=True)              
-    image = models.ImageField(upload_to="profile/")
+    image = models.ImageField(
+    upload_to="profile/",
+    blank=True,
+    null=True
+)
 
     # Bachelors
     college_name = models.CharField(max_length=100)
